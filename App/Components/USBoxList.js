@@ -82,7 +82,7 @@ export default class USBoxList extends Component{
   render(){
     if(!this.state.loaded){
       return (
-        <View style={[styles.container, styles.radius]}>
+        <View style={[styles.us_container, styles.radius]}>
           <View style={styles.loading}>
             <ActivityIndicatorIOS
               size="large"

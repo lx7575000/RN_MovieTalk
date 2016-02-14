@@ -16,8 +16,6 @@ import React, {
 
 import styles from './App/Style/index';
 
-import SimpleButton from './App/Components/SimpleButton';
-import NoteScreen from './App/Components/NoteScreen';
 import MovieList from './App/Components/MovieList';
 import USBoxList from './App/Components/USBoxList';
 import Featured from './App/Components/Feature';
@@ -37,7 +35,7 @@ class MovieTalk extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, marginTop: 33}}>
+      <View style={{flex: 1}}>
         <TabBarIOS barTintColor={'darkslateblue'} tintColor={'white'}>
           <TabBarIOS.Item
             icon={{uri: icons.hollow_star, scale: 4.6}}
@@ -46,7 +44,7 @@ class MovieTalk extends Component {
             selected={this.state.selectedTab === 'featured'}
             onPress={() => {this.setState({selectedTab: 'featured'})
           }}>
-            <Featured />
+            <Featured styles={{marginTop: 20}} />
           </TabBarIOS.Item>
           <TabBarIOS.Item
             icon={{uri: icons.menu, scale: 4.6}}
