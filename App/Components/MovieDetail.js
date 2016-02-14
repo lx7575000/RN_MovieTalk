@@ -12,17 +12,56 @@ import React, {
   NavigatorIOS
 } from 'react-native';
 
-import styles from '../Style/index';
+
+import styles from '../Style/MovieDetail';
 
 export default class MovieDetail extends Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      movieDetail: '',
+      loaded: false,
+    };
+
+    const REQUEST_URL = `https://api.douban.com/v2/movie/subject/${this.props.movie.id}`
+
+    this.fetchData(REQUEST_URL);
+
+  }
+
+  fetchData(REQUEST_URL){
+    fetch(REQUEST_URL)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({
+          loaded: true,
+          movieDetail: responseData,
+        })
+      });
+  }
+
   render(){
-    return(
-      <View style={styles.container}>
-        <View styles.loading>
-          <Text>
-              MovieDetail
-          </Text>
+    if(!this.state.loaded){
+      return(
+        <View style={styles.container}>
+          <View style={styles.loading}>
+            <ActivityIndicatorIOS
+              size="large"
+              color='#6435c9'
+            />
+            <Text>
+              正在努力加载 《{this.props.movie.title}》 内容
+            </Text>
+          </View>
         </View>
+      )
+    }
+    return(
+      <View style={styles.summary}>
+          <Text>
+            {this.state.movieDetail.summary}
+          </Text>
       </View>
     )
   }

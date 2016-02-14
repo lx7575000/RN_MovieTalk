@@ -11,12 +11,14 @@ import React, {
 
 import styles from '../Style/MovieList';
 
+import MovieDetail from './MovieDetail';
+
+
 const REQUEST_URL = 'https://api.douban.com/v2/movie/top250';
 
 export default class MovieList extends Component{
   constructor(props){
     super(props);
-    console.log('movielist is runing ...');
     this.state = {
       movies: new ListView.DataSource({
         rowHasChanged: (row1, row2)  => row1 !== row2
@@ -27,14 +29,21 @@ export default class MovieList extends Component{
     this.fetchData();
   }
 
+  showMovieDetail(movie){
+    this.props.navigator.push({
+      title: movie.title,
+      component: MovieDetail,
+      passProps: {movie},
+    });
+  }
+
 
   _renderMovieList(movie){
     return(
       <TouchableHighlight
-        onPress={() =>{
-          console.log(`《${movie.title}》被点了`)
-        }}
-        underlayColor='rgba(34, 26, 38, 0.1)'>
+        underlayColor='rgba(34, 26, 38, 0.1)'
+        onPress={ () =>this.showMovieDetail(movie)}
+        >
         <View style={styles.item}>
           <View style={styles.itemImage}>
             <Image
@@ -92,7 +101,7 @@ export default class MovieList extends Component{
       <View style={styles.container}>
         <ListView
           dataSource={this.state.movies}
-          renderRow = {this._renderMovieList}
+          renderRow = {this._renderMovieList.bind(this)}
         />
       </View>
     )

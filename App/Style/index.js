@@ -5,17 +5,7 @@ import React, {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#eae7ff',
-    margin: 20,
-    padding: 6,
-    overflow: 'hidden'
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
   },
   instructions: {
     textAlign: 'center',
@@ -49,8 +39,7 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 6,
     marginBottom: 40,
-
-  }
+  },
 });
 
 export default styles;
