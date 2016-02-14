@@ -10,8 +10,9 @@ let styles = StyleSheet.create({
     padding: 10,
   },
   container:{
+    flex: 1,
     marginTop: 20,
-    backgroundColor: 'rgba(73, 73, 73, 0.2)'
+    backgroundColor: '#ccc'
   },
   loading: {
     flex: 1,
@@ -21,9 +22,11 @@ let styles = StyleSheet.create({
   },
   item: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: 'row',
     paddingBottom: 6,
-    paddingTop: 6,
+    marginBottom: 6,
     borderBottomWidth: 1,
     borderColor: 'rgba(100, 53, 201, 0.1)',
     marginLeft: 20

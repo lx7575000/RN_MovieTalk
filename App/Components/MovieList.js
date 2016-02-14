@@ -16,7 +16,7 @@ const REQUEST_URL = 'https://api.douban.com/v2/movie/top250';
 export default class MovieList extends Component{
   constructor(props){
     super(props);
-
+    console.log('movielist is runing ...');
     this.state = {
       movies: new ListView.DataSource({
         rowHasChanged: (row1, row2)  => row1 !== row2
@@ -27,13 +27,6 @@ export default class MovieList extends Component{
     this.fetchData();
   }
 
-  _handleGenres(arr){
-    let genres = '';
-    for(let i = 0; i < arr.length; i++){
-      genres = genres + ' ' + arr[i];
-    }
-    return genres;
-  }
 
   _renderMovieList(movie){
     return(
@@ -98,7 +91,6 @@ export default class MovieList extends Component{
     return (
       <View style={styles.container}>
         <ListView
-          style={{flex: 1}}
           dataSource={this.state.movies}
           renderRow = {this._renderMovieList}
         />
