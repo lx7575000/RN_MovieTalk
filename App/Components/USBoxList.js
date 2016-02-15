@@ -10,6 +10,7 @@ import React, {
 } from 'react-native';
 
 import styles from '../Style/MovieList';
+import MovieDetail from './MovieDetail';
 
 const REQUEST_URL = 'https://api.douban.com/v2/movie/us_box';
 
@@ -38,9 +39,7 @@ export default class USBoxList extends Component{
   _renderMovieList(movie){
     return(
       <TouchableHighlight
-        onPress={() =>{
-          console.log(`《${movie.subject.title}》被点了`)
-        }}
+        onPress={() => this.showMovieDetail(movie.subject)}
         underlayColor='rgba(34, 26, 38, 0.1)'>
         <View style={styles.item}>
           <View style={styles.itemImage}>
@@ -79,6 +78,14 @@ export default class USBoxList extends Component{
       });
   }
 
+  showMovieDetail(movie){
+    this.props.navigator.push({
+      title: movie.title,
+      component: MovieDetail,
+      passProps: {movie},
+    });
+  }
+
   render(){
     if(!this.state.loaded){
       return (
@@ -100,7 +107,7 @@ export default class USBoxList extends Component{
         <ListView
           style={{flex: 1}}
           dataSource={this.state.movies}
-          renderRow = {this._renderMovieList}
+          renderRow = {this._renderMovieList.bind(this)}
         />
       </View>
     )

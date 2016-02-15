@@ -18,8 +18,9 @@ import styles from './App/Style/index';
 
 import MovieList from './App/Components/MovieList';
 import USBoxList from './App/Components/USBoxList';
-import Featured from './App/Components/Feature';
 
+import Featured from './App/Components/Feature';
+import USBox from './App/Components/USBox';
 
 import icons from './App/Assets/Icons';
 
@@ -29,7 +30,7 @@ class MovieTalk extends Component {
     super(props);
     // console.log('Hello start RN');
     this.state = {
-      selectedTab: 'us_box',
+      selectedTab: 'featured',
     }
   }
 
@@ -44,7 +45,7 @@ class MovieTalk extends Component {
             selected={this.state.selectedTab === 'featured'}
             onPress={() => {this.setState({selectedTab: 'featured'})
           }}>
-            <Featured styles={{marginTop: 20}} />
+            <Featured />
           </TabBarIOS.Item>
           <TabBarIOS.Item
             icon={{uri: icons.menu, scale: 4.6}}
@@ -53,7 +54,7 @@ class MovieTalk extends Component {
             selected={this.state.selectedTab === 'us_box'}
             onPress={() => {this.setState({selectedTab: 'us_box'})
           }}>
-            <USBoxList />
+            <USBox />
           </TabBarIOS.Item>
         </TabBarIOS>
       </View>

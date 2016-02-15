@@ -57,11 +57,23 @@ export default class MovieDetail extends Component{
         </View>
       )
     }
+
+    let movie = this.state.movieDetail;
+    let summary = movie.summary.split(/\n/).map( p => {
+      return (
+        <View style={{marginBottom: 16, paddingLeft: 6, paddingRight: 6}}>
+          <Text style={styles.description}>
+              {p}
+          </Text>
+        </View>
+      )
+    })
+
     return(
       <View style={styles.summary}>
-          <Text>
-            {this.state.movieDetail.summary}
-          </Text>
+        <View style={styles.item}>
+              {summary}
+        </View>
       </View>
     )
   }
