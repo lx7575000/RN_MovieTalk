@@ -79,7 +79,14 @@ let styles = StyleSheet.create({
   },
   searchContent: {
     fontSize: 20
-  }
+  },
+  deleteIcon: {
+    width: 20,
+    height: 20,
+    margin: 10,
+    marginBottom: 2,
+    opacity: 0.3,
+  },
 });
 
 export default styles;

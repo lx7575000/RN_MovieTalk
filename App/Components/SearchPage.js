@@ -13,7 +13,7 @@ import React, {
   TextInput
 } from 'react-native';
 
-
+import icons from '../Assets/Icons';
 import SearchResult from './SearchResult';
 import styles from '../Style/MovieList';
 
@@ -115,6 +115,17 @@ export default class SearchPage extends Component{
         onPress={ () => this.search(item)}
         >
         <View style={styles.item}>
+          <TouchableHighlight
+            underlayColor='rgba(34, 26, 38, 0.1)'
+            onPress={ () => {
+
+            }}
+          >
+             <Image
+                source={{uri: icons.deleteIcon}}
+                style={styles.deleteIcon}
+             />
+          </TouchableHighlight>
           <View style={styles.itemContent}>
             <Text style={[styles.itemHeader, styles.searchContent]}>
               {item}
