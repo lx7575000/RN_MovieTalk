@@ -13,8 +13,8 @@ import React, {
   TextInput
 } from 'react-native';
 
-import styles from '../Style/MovieDetail';
-import MovieDetail from './MovieDetail.js';
+import styles from '../Style/MovieList';
+import MovieDetail from './MovieDetail';
 
 
 export default class SearchResult extends Component{

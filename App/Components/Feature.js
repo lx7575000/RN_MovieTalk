@@ -16,9 +16,15 @@ import styles from '../Style/MovieList';
 import MovieList from './MovieList';
 
 
+/*
+  NavigatorIOS组件用于包装需要用到导航栏的组件
+  initialRoute 设定该导航栏用到的组件 component 和相应的标题 title
+  */
+
 export default class Featured extends Component{
   render(){
     return(
+
         <NavigatorIOS
                 style={{
                   flexDirection: 'row',

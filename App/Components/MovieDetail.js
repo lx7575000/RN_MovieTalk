@@ -59,6 +59,9 @@ export default class MovieDetail extends Component{
     }
 
     let movie = this.state.movieDetail;
+    /*
+      通过使用split将获得的文字内容按`\n`分割成数组内的多份，然后将它们包装成多个View块元素
+    */
     let summary = movie.summary.split(/\n/).map( p => {
       return (
         <View style={{marginBottom: 16, paddingLeft: 6, paddingRight: 6}}>

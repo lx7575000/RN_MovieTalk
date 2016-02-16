@@ -70,6 +70,15 @@ let styles = StyleSheet.create({
   },
   radius:{
     borderRadius: 16
+  },
+  searchHeader: {
+    color: 'rgba(0 ,0 ,0 , 0.8)',
+    fontSize: 18,
+    marginTop: 30,
+    marginLeft: 10,
+  },
+  searchContent: {
+    fontSize: 20
   }
 });
 

@@ -14,6 +14,10 @@ import React, {
 
 import SearchPage from './SearchPage';
 
+/*
+  具体内容到SearchPage中查看
+*/
+
 export default class Search extends Component{
   render(){
     return(
