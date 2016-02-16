@@ -21,6 +21,7 @@ import USBoxList from './App/Components/USBoxList';
 
 import Featured from './App/Components/Feature';
 import USBox from './App/Components/USBox';
+import Search from './App/Components/Search';
 
 import icons from './App/Assets/Icons';
 
@@ -30,7 +31,7 @@ class MovieTalk extends Component {
     super(props);
     // console.log('Hello start RN');
     this.state = {
-      selectedTab: 'featured',
+      selectedTab: 'search',
     }
   }
 
@@ -55,6 +56,14 @@ class MovieTalk extends Component {
             onPress={() => {this.setState({selectedTab: 'us_box'})
           }}>
             <USBox />
+          </TabBarIOS.Item>
+          <TabBarIOS.Item
+            icon={{uri: icons.search, scale: 4.6}}
+            title="搜索"
+            selected={this.state.selectedTab === 'search'}
+            onPress={() => {this.setState({selectedTab: 'search'})
+          }}>
+            <Search />
           </TabBarIOS.Item>
         </TabBarIOS>
       </View>
