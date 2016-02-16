@@ -104,6 +104,17 @@ export default class SearchPage extends Component{
       console.log(e);
     }
   }
+  /*
+    删除历史记录中的项目
+  */
+  deleteSearchHistoryItem(item){
+    let newSearchHistory = new Set(this.state.searchHistory);
+    newSearchHistory.delete(item);
+
+    this.setState({
+      searchHistory: [...newSearchHistory]
+    });
+  }
 
   /*
     具体的各个搜索历史单元页面
@@ -118,7 +129,7 @@ export default class SearchPage extends Component{
           <TouchableHighlight
             underlayColor='rgba(34, 26, 38, 0.1)'
             onPress={ () => {
-
+              this.deleteSearchHistoryItem(item)
             }}
           >
              <Image
