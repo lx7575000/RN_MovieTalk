@@ -31,7 +31,7 @@ class MovieTalk extends Component {
     super(props);
     // console.log('Hello start RN');
     this.state = {
-      selectedTab: 'search',
+      selectedTab: 'featured',
     }
   }
 

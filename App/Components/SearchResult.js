@@ -21,14 +21,91 @@ export default class SearchResult extends Component{
   constructor(props){
     super(props);
 
-    let dataSource = new ListView.DataSource({
+    this.dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
 
     this.state = {
-      movies: dataSource.cloneWithRows(this.props.results)
+      movies: this.props.results.subjects,
+      total: this.props.results.total,
+      count: this.props.results.count,
+      start: this.props.results.count,
+      query: this.props.query,
+    }
+
+    this.REQUEST_URL = 'http://api.douban.com/v2/movie/search';
+  }
+
+  /*
+    renderFooter 加载的页脚，用于在列表加载等待时间内让用户有个可见的加载动画
+  */
+  renderFooter(){
+    if(this.state.total > this.state.start){
+      return(
+        <View style={{
+          marginVertical: 20,
+          paddingBottom: 50,
+          alignSelf: 'center',
+        }}>
+          <ActivityIndicatorIOS/>
+        </View>
+      );
+      }else{
+        return(
+          <View style={{
+            marginVertical: 20,
+            paddingBottom: 50,
+            alignSelf: 'center',
+          }}>
+            <Text style={{color: 'rgba(0,0,0, 0.3)'}}>
+              没有可以显示的内容了: )
+            </Text>
+          </View>
+        );
     }
   }
+  /*
+    获取各种类型的URL
+  */
+  requestURL(
+    url=this.REQUEST_URL,
+    count=this.state.count,
+    start=this.state.start,
+    query=this.state.query
+  ){
+    return(
+      `${url}?q=${query}&count=${count}&start=${start}`
+    );
+  }
+
+  /*
+    loadMore 加载更多内容
+  */
+  loadMore(){
+    // console.log('loadMore ...');
+    fetch(this.requestURL())
+      .then(response => response.json())
+      .then(responseData => {
+        let newStart = responseData.start + responseData.count;
+        this.setState({
+          movies: [...this.state.movies, ...responseData.subjects],
+          start: newStart,
+        });
+      })
+      .done();
+  }
+
+
+  /*
+    onEndReached 函数用于处理列表到底端时应相对应的动作
+  */
+  onEndReached(){
+    console.log(`到底了！开始: ${this.state.start}, 总共： ${this.state.total}`);
+    if(this.state.total > this.state.start){
+      this.loadMore();
+    }
+  }
+
 
   showMovieDetail(movie){
     this.props.navigator.push({
@@ -74,7 +151,11 @@ export default class SearchResult extends Component{
     return(
       <View style={styles.container}>
         <ListView
-          dataSource={this.state.movies}
+          renderFooter={this.renderFooter.bind(this)}
+          pageSize={this.state.count}
+          onEndReached={this.onEndReached.bind(this)}
+          initialListSize={this.state.count}
+          dataSource={this.dataSource.cloneWithRows(this.state.movies)}
           renderRow={this._renderMovieList.bind(this)}
         />
       </View>

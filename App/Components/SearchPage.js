@@ -162,7 +162,8 @@ export default class SearchPage extends Component{
           title: responseData.title,
           component: SearchResult,
           passProps: {
-            results: responseData.subjects
+            results: responseData,
+            query: this.state.query,
           }
         });
         this.setState({

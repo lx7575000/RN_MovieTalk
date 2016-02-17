@@ -14,20 +14,69 @@ import styles from '../Style/MovieList';
 import MovieDetail from './MovieDetail';
 
 
-const REQUEST_URL = 'https://api.douban.com/v2/movie/top250';
+
 
 export default class MovieList extends Component{
 
   constructor(props){
     super(props);
-    this.state = {
-      movies: new ListView.DataSource({
-        rowHasChanged: (row1, row2)  => row1 !== row2
-      }),
-      loaded: false
-    };
 
+    this.state = {
+      // movies: new ListView.DataSource({
+      //   rowHasChanged: (row1, row2)  => row1 !== row2
+      // }),
+      movies: [],
+      loaded: false,
+      count: 20,
+       start: 0,
+       total: 0,
+    };
+    this.DataSource =  new ListView.DataSource({
+      rowHasChanged: (row1, row2)  => row1 !== row2
+    });
+    this.REQUEST_URL = 'https://api.douban.com/v2/movie/top250';
     this.fetchData();
+  }
+
+  /*
+    获取各种类型的URL
+  */
+  requestURL(
+    url=this.REQUEST_URL,
+    count=this.state.count,
+    start=this.state.start
+  ){
+    return(
+      `${url}?count=${count}&start=${start}`
+    );
+  }
+
+  /*
+    loadMore 加载更多内容
+  */
+  loadMore(){
+    // console.log('loadMore ...');
+    fetch(this.requestURL())
+      .then(response => response.json())
+      .then(responseData => {
+        let newStart = responseData.start + responseData.count;
+        this.setState({
+          movies: [...this.state.movies, ...responseData.subjects],
+          start: newStart,
+        });
+      })
+      .done();
+  }
+
+
+  /*
+    onEndReached 函数用于处理列表到底端时应相对应的动作
+  */
+  onEndReached(){
+    console.log(`到底了！开始: ${this.state.start}, 总共： ${this.state.total}`);
+    if(this.state.total > this.state.start){
+      this.loadMore();
+    }
   }
 
   /*showMovieDetail
@@ -38,7 +87,6 @@ export default class MovieList extends Component{
         component 构建页面的组件
         passProps 传递给下层页面的参数
     */
-
   showMovieDetail(movie){
     this.props.navigator.push({
       title: movie.title,
@@ -47,6 +95,34 @@ export default class MovieList extends Component{
     });
   }
 
+  /*
+    renderFooter 加载的页脚，用于在列表加载等待时间内让用户有个可见的加载动画
+  */
+  renderFooter(){
+    if(this.state.total > this.state.start){
+      return(
+        <View style={{
+          marginVertical: 20,
+          paddingBottom: 50,
+          alignSelf: 'center',
+        }}>
+          <ActivityIndicatorIOS/>
+        </View>
+      );
+      }else{
+        return(
+          <View style={{
+            marginVertical: 20,
+            paddingBottom: 50,
+            alignSelf: 'center',
+          }}>
+            <Text style={{color: 'rgba(0,0,0, 0.3)'}}>
+              没有可以显示的内容了: )
+            </Text>
+          </View>
+        );
+    }
+  }
 
   /*
     _renderMovieList 方法 返回ListView中各个单元的具体构造结构和样式
@@ -54,7 +130,6 @@ export default class MovieList extends Component{
         underlayColor 属性用于设定具体阴影颜色
         onPress 属性用于返回点击反应的方法
   */
-
   _renderMovieList(movie){
     return(
       <TouchableHighlight
@@ -95,13 +170,16 @@ export default class MovieList extends Component{
   */
 
   fetchData(){
-    fetch(REQUEST_URL)
+    fetch(this.requestURL())
       .then(response => response.json())
       .then(responseData => {
         // console.log(responseData);
+        let newStart = responseData.start + responseData.count;
         this.setState({
-          movies: this.state.movies.cloneWithRows(responseData.subjects),
-          loaded: true
+          movies: responseData.subjects,
+          loaded: true,
+          total: responseData.total,
+          start: newStart,
         })
       });
   }
@@ -132,11 +210,17 @@ export default class MovieList extends Component{
       ListView 用于显示以列表形式显示的内容
         dataSource属性用于传入数据，其类型为ListView.DataSource
         renderRow 中传入各个列单元想要显示的内容
+        initialListSize 属性说明预加载的项目数目
+        pageSize属性指定每次载入列表数量
     */
     return (
       <View style={styles.container}>
         <ListView
-          dataSource={this.state.movies}
+          renderFooter={this.renderFooter.bind(this)}
+          pageSize={this.state.count}
+          onEndReached={this.onEndReached.bind(this)}
+          initialListSize={this.state.count}
+          dataSource={this.DataSource.cloneWithRows(this.state.movies)}
           renderRow = {this._renderMovieList.bind(this)}
         />
       </View>
