@@ -10,7 +10,8 @@ import React, {
   ActivityIndicatorIOS,
   TouchableHighlight,
   NavigatorIOS,
-  TextInput
+  TextInput,
+  AsyncStorage,
 } from 'react-native';
 
 import icons from '../Assets/Icons';
@@ -26,6 +27,77 @@ export default class SearchPage extends Component{
   constructor(props){
     super(props);
 
+    /*
+      setItem 设定键值对
+      getItem 通过键值获取对应的值
+    */
+    // AsyncStorage.setItem('name', 'movieTalk')
+    //   .then(() => {
+    //     AsyncStorage.getItem('name')
+    //       .then((value) => console.log('name is '  + value));
+    //   });
+    //
+    //   AsyncStorage.setItem('team', 'lx7575000')
+    //     .then(() => {
+    //       AsyncStorage.getItem('team')
+    //         .then((value) => console.log('team is ' + value));
+    //     });
+    //
+    //     AsyncStorage.setItem('version', '1.0.0')
+    //       .then(() => {
+    //         AsyncStorage.getItem('version')
+    //           .then((value) => console.log('version is ' + value));
+    //       });
+
+    //getAllkeys 获取所有的关键字
+    // AsyncStorage.getAllkeys()
+    //   .then((key) => console.log(keys));
+
+    /*
+      设定多个键值对
+    */
+    // AsyncStorage.multiSet([
+    //   ['component', 'SearchPage'],
+    //   ['date', '2016-2-17'],
+    //   ['type', 'React-Native']
+    // ]);
+    /*
+      取得多个对应值
+    */
+      // AsyncStorage.multiGet(['component', 'date', 'type'])
+      //   .then((value) => console.log(value));
+
+    /*
+      删除元素
+    */
+    // AsyncStorage.multiSet([
+    //   ['name', 'movieTalk'],
+    //   ['version', '1.0.0'],
+    //   ['type', 'iOS']
+    // ])
+    //   .then(() => {
+    //     AsyncStorage.multiGet(['name', 'version', 'type'])
+    //       .then((value) => console.log(value));
+    //     console.log('multiGet');
+    //   })
+    //   .then(() => {
+    //     console.log('removeItem ');
+    //     AsyncStorage.removeItem('version')
+    //       .then(() => {
+    //         console.log('after removeItem');
+    //         AsyncStorage.getItem('version')
+    //           .then((value) => console.log('version ' + value));
+    //       })
+    //   });
+    //
+    //   AsyncStorage.clear()
+    //     .then(() => {
+    //       console.log('clear ....');
+    //       AsyncStorage.getAllKeys()
+    //         .then((keys) => console.log('keys ' + keys));
+    //     });
+
+
     this.dataSource = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
@@ -34,8 +106,17 @@ export default class SearchPage extends Component{
       query: '',
       loaded: true,
       opacity: 0,
-      searchHistory: ['lost', 'matrix', 'fargo', 'hangover'],
+      searchHistory: [],
     }
+
+    AsyncStorage.getItem('searchHistory')
+      .then((searchHistory) => {
+        if(searchHistory){
+          this.setState({
+            searchHistory: JSON.parse(searchHistory)
+          });
+        }
+      });
   }
 
   /*
@@ -52,6 +133,10 @@ export default class SearchPage extends Component{
     this.setState({
       searchHistory: newSearchHistory
     });
+
+    AsyncStorage.setItem(
+      'searchHistory', JSON.stringify(newSearchHistory)
+    )
   }
 
 
