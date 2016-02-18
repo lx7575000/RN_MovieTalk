@@ -18,13 +18,58 @@ import styles from '../Style/MovieDetail';
 export default class Login extends Component{
   constructor(props){
     super(props);
+
+    this.api = {
+      key: '05b2e24806124f0f1118a6d81236ed2d',
+      secret: '132f022db4330578',
+    }
+
+    this.oAuth = {
+      authBaseUrl: 'https://www.douban.com/service/auth2/auth',
+      tokenBaseUrl: 'https://www.douban.com/service/auth2/token',
+      redirectUri: 'http://ninghao.net',
+      responseType: 'code',
+      grantType: 'authorization_code',
+      scope: 'douban_basic_common,movie_basic,movie_basic_r,movie_basic_w',
+    }
+
+    this.state = {
+      authCode: '',
+    }
+    this.authUrl = `${this.oAuth.authBaseUrl}
+      ?client_id=${this.api.key}
+      &redirect_uri=${this.oAuth.redirectUri}
+      &response_type=${this.oAuth.responseType}
+      &scope=${this.oAuth.scope}`.replace(/(\r\n|\n|\r| )/gm, '');
+  }
+
+  /*
+    getToken
+      获取Token
+  */
+  getToken(){
+    let tokenUrl = `${this.oAuth.authBaseUrl}
+      ?client_id=${this.api.key}
+      &client_secret=${this.api.secret}
+      &redirect_uri=${this.oAuth.redirectUri}
+      &response_type=${this.oAuth.responseType}
+      &code=${this.state.authCode}`.replace(/(\r\n|\n|\r| )/gm, '');
   }
 
   /*
     onNavigationStateChange
+      获取登陆第三方网站返回的 code值
   */
-  onNavigationStateChange(state){
-    console.log(state);
+  async onNavigationStateChange(state){
+    if(state.url.includes('?code=') && state.navigationType === 1){
+      let code = state.url.split('code=')[1];
+      await this.setState({
+        authCode: code
+      });
+      console.log('code ' + this.state.authCode);
+
+      this.getToken();
+    }
   }
 
   /*
@@ -39,7 +84,7 @@ export default class Login extends Component{
     return (
       <WebView
         startInLoadingState={true}
-        url='http://www.douban.com'
+        url={this.authUrl}
         onNavigationStateChange={this.onNavigationStateChange.bind(this)}
       />
     );
