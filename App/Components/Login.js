@@ -45,7 +45,7 @@ export default class Login extends Component{
 
   /*
     getToken
-      获取Token
+      获取Token，请求token
   */
   getToken(){
     let tokenUrl = `${this.oAuth.authBaseUrl}
@@ -54,11 +54,22 @@ export default class Login extends Component{
       &redirect_uri=${this.oAuth.redirectUri}
       &response_type=${this.oAuth.responseType}
       &code=${this.state.authCode}`.replace(/(\r\n|\n|\r| )/gm, '');
+
+      fetch(tokenUrl, {
+        method: 'POST',
+        body: `client_id=${this.api.key}`
+      })
+        .then(response => response.json())
+        .then(responseData){
+          console.log(responseData);
+        }
   }
 
   /*
     onNavigationStateChange
       获取登陆第三方网站返回的 code值
+      使用ES7的 async异步申请数据
+        只有在await的setState成功再继续执行方法内的后续操作
   */
   async onNavigationStateChange(state){
     if(state.url.includes('?code=') && state.navigationType === 1){

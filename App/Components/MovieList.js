@@ -35,6 +35,9 @@ export default class MovieList extends Component{
       rowHasChanged: (row1, row2)  => row1 !== row2
     });
     this.REQUEST_URL = 'https://api.douban.com/v2/movie/top250';
+  }
+  //先加载组件，再申请数据
+  componentDidMount(){
     this.fetchData();
   }
 

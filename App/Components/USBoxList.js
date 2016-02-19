@@ -24,7 +24,11 @@ export default class USBoxList extends Component{
       }),
       loaded: false
     };
-
+  }
+  /*
+    先加载组件，后申请数据
+  */
+  componentDidMount(){
     this.fetchData();
   }
 

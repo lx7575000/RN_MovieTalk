@@ -24,10 +24,13 @@ export default class MovieDetail extends Component{
       loaded: false,
     };
 
-    const REQUEST_URL = `https://api.douban.com/v2/movie/subject/${this.props.movie.id}`
-
+    const REQUEST_URL = `https://api.douban.com/v2/movie/subject/${this.props.movie.id}`;
+  }
+  /*
+    组件加载完成再开始传入数据
+  */
+  componentDidMount(){
     this.fetchData(REQUEST_URL);
-
   }
 
   fetchData(REQUEST_URL){
