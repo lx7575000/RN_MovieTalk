@@ -27,7 +27,7 @@ export default class Login extends Component{
     this.oAuth = {
       authBaseUrl: 'https://www.douban.com/service/auth2/auth',
       tokenBaseUrl: 'https://www.douban.com/service/auth2/token',
-      redirectUri: 'http://ninghao.net',
+      redirectUri: 'http://github.com',
       responseType: 'code',
       grantType: 'authorization_code',
       scope: 'douban_basic_common,movie_basic,movie_basic_r,movie_basic_w',
